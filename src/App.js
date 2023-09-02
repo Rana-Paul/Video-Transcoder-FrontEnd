@@ -25,7 +25,7 @@ function App() {
       setError({type: "Empty", msg: "Please Select a Video File"})
     }
     else {
-      
+      setLoading(true);
       const formData = new FormData();
       formData.append("file", file);
       
@@ -92,7 +92,7 @@ function App() {
             
           ):(
             <button
-            //  onClick={convert}
+             onClick={convert}
              >
             Convert
           </button>
