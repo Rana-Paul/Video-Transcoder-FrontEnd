@@ -25,7 +25,7 @@
     overflow: hidden;
     box-shadow: 1px 1px 10px rgb(255, 255, 255);
     /* text-shadow: 1px 1px 1px black; */
-    transition: all 0.5s ease-in-out;
+
 }
 .box:hover{
     box-shadow: none;
@@ -37,7 +37,7 @@
     align-items: center;
     text-align: center;
     padding: 10px;
-    transition: all 0.5s ease-in-out;
+    /* transition: all 0.5s ease-in-out; */
 }
 .dragactivenone:hover{
     background: #c7c7c724;
@@ -74,7 +74,12 @@ button:hover{
 }
 
 /* Loader */
-
+.loading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .loader{
     width: 50px;
     height: 50px;
@@ -98,8 +103,8 @@ button:hover{
 
 .text{
     /* background-color: #000; */
-    margin-top: 1rem;
-    position: fixed;
+    margin-top:1rem;
+    /* position: absolute; */
     color: white;
     font-size: 12px;
     width:70px ;
@@ -115,3 +120,53 @@ button:hover{
       width: 80px;
     }
   }
+  .time{
+    color: white;
+    margin-top: 1rem;
+  }
+
+  /* Error handling */
+
+.errorbox{
+    height: 40%;
+    width: 50%;
+    background-color: rgba(255, 0, 0, 0.648);
+    color: white;
+    border: 2px solid black;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    padding: 15px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 2px 2px 10px black;
+    animation: error 0.3s ;
+}
+.errorbox .cross{
+    width: 95%;
+    height: 30%;
+    text-align: right;
+    font-size: 25px;
+}
+.errorbox .errormsg{
+    text-align: center;
+    transition: all 0.2s ease-in;
+    text-shadow: 1px  1px 1px black;
+    font-size: 17px;
+    
+}
+.errorbox .cross span{
+    cursor: pointer;
+    text-shadow: 1px  1px 1px black;
+}
+.errorbox .cross span:hover{
+    text-shadow: none;
+    
+}
+
+@keyframes error {
+    0%{
+        transform: translateY(-250px);
+    }
+}

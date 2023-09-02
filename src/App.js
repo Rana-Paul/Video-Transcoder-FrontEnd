@@ -19,37 +19,52 @@ function App() {
   const [file, setFile] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const [catcherr,setCatcherr]=useState(false)
 
   const convert = async() => {
     if(!file) {
+      setCatcherr(true)
       setError({type: "Empty", msg: "Please Select a Video File"})
     }
     else {
       setLoading(true);
+      setCatcherr(false)
       const formData = new FormData();
       formData.append("file", file);
       
       axios.post("https://api.video-transcoder.online/convert", formData, {responseType: 'blob'}).then((res) => {
         setLoading(false);
-        fileDownload(res.data, 'Output.zip')
+        fileDownload(res.data, 'Output.zip');
       }).catch((err) => {
+        setCatcherr(true)
         console.log(err.message);
         setError({type: 'Network', msg: 'Server is Down Now, Please Try after Some Time'})
       })
     }
   };
-  // setTimeout(() => {
-  //       setLoading(true);
-        
-  //     }, 5000);
-
   return (
     <>
       <div className="App" >
-
+      <div className="container"> 
         {/* if err then show it here using err.msg*/}
+        {catcherr?(
+          <div className="errorbox">
+            <div className="cross">
+               <span onClick={()=>{
+                setCatcherr(false);
+                setLoading(false)
+              }}>X</span>
+            </div>
+            <div className="errormsg">
+            <p>{error.msg}
+            </p>
 
-        <div className="container">
+            </div>
+           
+          </div>
+       ):
+        
+        (<>
           <div className="box"
             {...getRootProps()}
           >
@@ -88,6 +103,7 @@ function App() {
             <div className="text">
             <div>Converting . . .</div>
             </div>
+            <div className="time">It's may take a while</div>
             </div>
             
           ):(
@@ -99,10 +115,13 @@ function App() {
           )}
             
             
-        </div>
+        </>)}
+
+        
 
         {/* Convert Button  */}
       </div>
+    </div>
     </>
   );
 }
