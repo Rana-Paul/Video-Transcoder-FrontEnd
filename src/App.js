@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import "./App.css";
 import { useDropzone } from "react-dropzone";
 import { BiCloudUpload } from "react-icons/bi";
-import { Button } from "@material-ui/core";
 import axios from "axios";
 import fileDownload from "js-file-download";
 function App() {
@@ -18,33 +17,54 @@ function App() {
   });
 
   const [file, setFile] = useState();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
+  const [catcherr,setCatcherr]=useState(false)
 
   const convert = async() => {
-
     if(!file) {
+      setCatcherr(true)
       setError({type: "Empty", msg: "Please Select a Video File"})
     }
     else {
-
+      setLoading(true);
+      setCatcherr(false)
       const formData = new FormData();
       formData.append("file", file);
+      
       axios.post("https://api.video-transcoder.online/convert", formData, {responseType: 'blob'}).then((res) => {
-        fileDownload(res.data, 'Output.zip')
+        setLoading(false);
+        fileDownload(res.data, 'Output.zip');
       }).catch((err) => {
+        setCatcherr(true)
         console.log(err.message);
         setError({type: 'Network', msg: 'Server is Down Now, Please Try after Some Time'})
       })
     }
   };
-
   return (
     <>
       <div className="App" >
-
+      <div className="container"> 
         {/* if err then show it here using err.msg*/}
+        {catcherr?(
+          <div className="errorbox">
+            <div className="cross">
+               <span onClick={()=>{
+                setCatcherr(false);
+                setLoading(false)
+              }}>X</span>
+            </div>
+            <div className="errormsg">
+            <p>{error.msg}
+            </p>
 
-        <div className="container">
+            </div>
+           
+          </div>
+       ):
+        
+        (<>
           <div className="box"
             {...getRootProps()}
           >
@@ -77,14 +97,31 @@ function App() {
               </div>
             )}
           </div>
-          
-            <button onClick={convert} >
-              Convert
-            </button>
-        </div>
+          {loading? (
+            <div className="loading">
+            <div className="loader"></div>
+            <div className="text">
+            <div>Converting . . .</div>
+            </div>
+            <div className="time">It's may take a while</div>
+            </div>
+            
+          ):(
+            <button
+             onClick={convert}
+             >
+            Convert
+          </button>
+          )}
+            
+            
+        </>)}
+
+        
 
         {/* Convert Button  */}
       </div>
+    </div>
     </>
   );
 }
