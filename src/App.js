@@ -40,36 +40,22 @@ function App() {
 
   return (
     <>
-      <div
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className="App" >
 
         {/* if err then show it here using err.msg*/}
 
-        <div style={{ width: "40%", height: "40%" }}>
-          <div
-            style={{ width: "100%", height: "100%", border: "2px solid red" }}
+        <div className="container">
+          <div className="box"
             {...getRootProps()}
           >
             <input {...getInputProps()} />
 
             {isDragActive ? (
+              <div className="dragactive">
               <p>Drop the files here ...</p>
+            </div>
             ) : (
-              <div
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              <div className="dragactivenone">
                 <div
                   style={{
                     justifyContent: "center",
@@ -78,31 +64,23 @@ function App() {
                 >
                   {" "}
                   <div style={{ display: "flex", justifyContent: "center" }}>
-                    <BiCloudUpload color="black" size={40} />
+                    <BiCloudUpload color="white" size={40}/>
                   </div>
                   {file ? (
                     <p>{file.name}</p>
                   ) : (
                     <p>
-                      Drag 'n' drop some files here, or click to select files
+                      Drag & drop some files here, or click to select files
                     </p>
                   )}
                 </div>
               </div>
             )}
           </div>
-          <div
-            style={{
-              marginTop: "30px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Button onClick={convert} variant="contained" fullWidth>
+          
+            <button onClick={convert} >
               Convert
-            </Button>
-          </div>
+            </button>
         </div>
 
         {/* Convert Button  */}
