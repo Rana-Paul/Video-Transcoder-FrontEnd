@@ -50,8 +50,7 @@ function App() {
         }}
       >
 
-        {/* if err? then error msg show here */}
-        {/* check error type if type==empty then show err.msg if type==Network then show err.msg */}
+        {/* if err then show it here using err.msg*/}
 
         <div style={{ width: "40%", height: "40%" }}>
           <div
