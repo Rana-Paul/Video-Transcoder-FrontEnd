@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import "./App.css";
 import { useDropzone } from "react-dropzone";
 import { BiCloudUpload } from "react-icons/bi";
-import { Button } from "@material-ui/core";
 import axios from "axios";
 import fileDownload from "js-file-download";
 function App() {
@@ -18,18 +17,20 @@ function App() {
   });
 
   const [file, setFile] = useState();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
 
   const convert = async() => {
-
     if(!file) {
       setError({type: "Empty", msg: "Please Select a Video File"})
     }
     else {
-
+      
       const formData = new FormData();
       formData.append("file", file);
+      
       axios.post("https://api.video-transcoder.online/convert", formData, {responseType: 'blob'}).then((res) => {
+        setLoading(false);
         fileDownload(res.data, 'Output.zip')
       }).catch((err) => {
         console.log(err.message);
@@ -37,6 +38,10 @@ function App() {
       })
     }
   };
+  // setTimeout(() => {
+  //       setLoading(true);
+        
+  //     }, 5000);
 
   return (
     <>
@@ -77,10 +82,23 @@ function App() {
               </div>
             )}
           </div>
-          
-            <button onClick={convert} >
-              Convert
-            </button>
+          {loading? (
+            <div className="loading">
+            <div className="loader"></div>
+            <div className="text">
+            <div>Converting . . .</div>
+            </div>
+            </div>
+            
+          ):(
+            <button
+            //  onClick={convert}
+             >
+            Convert
+          </button>
+          )}
+            
+            
         </div>
 
         {/* Convert Button  */}
