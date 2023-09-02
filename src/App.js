@@ -18,19 +18,22 @@ function App() {
   });
 
   const [file, setFile] = useState();
-  const [error, setError] = useState();
+  const [error, setError] = useState({});
 
   const convert = async() => {
 
     if(!file) {
-      setError("Please Upload a Video")
+      setError({type: "Empty", msg: "Please Select a Video File"})
     }
     else {
 
       const formData = new FormData();
       formData.append("file", file);
-      axios.post("http://localhost:8000/convert", formData, {responseType: 'blob'}).then((res) => {
+      axios.post("https://api.video-transcoder.online/convert", formData, {responseType: 'blob'}).then((res) => {
         fileDownload(res.data, 'Output.zip')
+      }).catch((err) => {
+        console.log(err.message);
+        setError({type: 'Network', msg: 'Server is Down Now, Please Try after Some Time'})
       })
     }
   };
@@ -48,6 +51,7 @@ function App() {
       >
 
         {/* if err? then error msg show here */}
+        {/* check error type if type==empty then show err.msg if type==Network then show err.msg */}
 
         <div style={{ width: "40%", height: "40%" }}>
           <div
